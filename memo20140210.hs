@@ -73,12 +73,14 @@ let xxs = [[1,3,5,2,3,1,2,4,5],[1,2,3,4,5,6,7,8,9],[1,2,4,2,1,6,3,1,3,2,3,6]]
 -- * fst
 fst (8,11)
 fst ("Wow", False)
+fst (42, "boo!", "err") -- エラー
 -- * snd
 snd (8,11)
 snd ("Wow", False)
+snd (42, "boo!", "err") -- エラー
 -- * zip
 zip [1,2,3,4,5] [5,5,5,5,5]
-zip [1..5] ["one", "tow", "three", "four", "five"]
+zip [1..5] ["one", "two", "three", "four", "five"]
 zip [5,3,2,6,7,2,5,4,6,6] ["im", "a", "turtle"]
 zip [1..] ["apple", "orange", "cherry", "mango"]
 
