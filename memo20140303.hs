@@ -124,3 +124,51 @@ firstLetter :: String -> String
 firstLetter "" = "Empty string, whoops!"
 firstLetter all@(x:xs) = "The first letter of " ++ all ++ " is " ++ [x]
 -- > firstLetter "Dracula"
+
+
+
+-- ------------------------------
+-- 3.2 場合分けして、きっちりガード！ (P.41 - P.43)
+-- ------------------------------
+-- 引数の構造で場合分けする場合はパターンを使う
+-- 引数の値が満たす性質で場合分けする場合はガードを使う
+-- 複数条件がある時はifより可読性が高く、パターンマッチとの相性も抜群
+
+-- ガード
+-- BMIによって叱る関数を定義
+bmiTell :: Double -> String
+bmiTell bmi
+	| bmi <= 18.5 = "You're underweight, you emo, you!"
+	| bmi <= 25.0 = "You're supposedly normal.\
+					\ Pfft, I bet you're ugly!"
+	| bmi <= 30.0 = "You're fat! Lose some weight, fatty!"
+	| otherwise   = "You're a whale, congratulations!"
+-- > bmiTell 24.3
+
+-- 複数引数版
+bmiTell' :: Double -> Double -> String
+bmiTell' weight height
+	| weight / height ^ 2 <= 18.5 = "You're underweight, you emo, you!"
+	| weight / height ^ 2 <= 25.0 = "You're supposedly normal.\
+					\ Pfft, I bet you're ugly!"
+	| weight / height ^ 2 <= 30.0 = "You're fat! Lose some weight, fatty!"
+	| otherwise   = "You're a whale, congratulations!"
+-- > bmiTell' 85 1.90
+
+-- ありがちなミス: 引数とガードの間に = を入れてしまう
+
+-- max関数
+max' :: (Ord a) => a -> a -> a
+max' a b
+	| a <= b    = b
+	| otherwise = a
+-- > max' 3 2
+
+-- compare関数
+myCompare :: (Ord a) => a -> a -> Ordering
+a `myCompare` b
+	| a == b    = EQ
+	| a <= b    = LT
+	| otherwise = GT
+-- > 3 `myCompare` 2
+
