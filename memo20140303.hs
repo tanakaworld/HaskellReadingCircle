@@ -172,3 +172,18 @@ a `myCompare` b
 	| otherwise = GT
 -- > 3 `myCompare` 2
 
+
+
+-- ------
+-- おまけ
+-- ------
+-- 自作last関数(Vatscy作)
+last' :: [a] -> a
+last' [] = error "Can't call last on an empty list, dummy!"
+last' (x:[]) = x
+last' (_:xs) = last' xs
+-- > last' [1,2,3,4,5]
+
+last'' :: [a] -> a
+last'' xs = head' (reverse xs)
+-- > last'' [1,2,3,4,5]
