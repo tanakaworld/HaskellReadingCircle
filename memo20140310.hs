@@ -92,3 +92,55 @@ initials firstname lastname = [f] ++ "." ++ [l] ++ "."
 		(l:_) = lastname
 
 -- > initials "Tomoya" "Baba"
+
+-- whereブロックの中の関数
+-- 定数だけでなく関数も定義できる
+
+calcBmis :: [(Double, Double)] -> [Double]
+calcBmis xs = [bmi w h | (w, h) <- xs]
+	where bmi weight height = weight / height ^ 2
+
+-- > calcBmis [(69, 1.69)]
+
+-- ------------------------------
+-- 3.3 letItBe (P.47 - P.52)
+-- ------------------------------
+
+-- where節とよく似たもの
+-- どこでも変数を束縛できる
+-- let自身も式となるが、ガード間では共有されない
+-- パターンマッチも使える
+
+cylinder :: Double -> Double -> Double
+cylinder r h =
+	let	sideArea = 2 * pi * r * h
+		topArea = pi * r ^ 2
+	in	sideArea + 2 * topArea
+
+-- > cylinder 2 4
+
+-- 式なので値を持つ
+-- > 4 * (let a = 9 in a + 1) + 2
+
+-- ローカルスコープに関数を作れる
+-- > [let square x = x * x in (square 5, square 3, square 2)]
+
+-- セミコロン区切りで複数の変数が束縛できる
+-- > (let a = 100; b = 200; c = 300 in a * b * c, let foo = "Hey "; bar = "there!" in foo ++ bar)
+
+-- タプルを要素に分解
+-- > (let (a, b, c) = (1, 2, 3) in a + b + c) * 100
+
+-- リスト内包表記でのlet
+-- 引数をw,hに束縛 > w,hをbmiに束縛
+calcBmis' :: [(Double, Double)] -> [Double]
+calcBmis' xs = [bmi | (w,h) <- xs, let bmi = w / h ^2]
+-- > calcBmis' [(69,1.69)]
+
+-- letはletより後ろと、出力(|より前)からみえる
+-- (w,h) <- xsの部分はジェネレータと呼ばれ、let束縛は参照できない
+calcBmis'' :: [(Double, Double)] -> [Double]
+calcBmis'' xs = [bmi | (w,h) <- xs, let bmi = w / h ^2, bmi > 25.0]
+-- > calcBmis'' [(69,1.69)]
+
+-- GHCiでのlet
