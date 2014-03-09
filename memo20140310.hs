@@ -1,7 +1,5 @@
-
 -- ※Ⅰ このファイルに記述してある関数を読み込むために、GHCIコマンドは「-- >」でコメントアウトしてあります。
 -- ※Ⅱ 「-- >」と書いてあるものは、ghci上で動きます。
-
 
 
 -- ------------------------------
@@ -103,7 +101,7 @@ calcBmis xs = [bmi w h | (w, h) <- xs]
 -- > calcBmis [(69, 1.69)]
 
 -- ------------------------------
--- 3.3 letItBe (P.47 - P.52)
+-- 3.4 letItBe (P.47 - P.52)
 -- ------------------------------
 
 -- where節とよく似たもの
@@ -144,3 +142,56 @@ calcBmis'' xs = [bmi | (w,h) <- xs, let bmi = w / h ^2, bmi > 25.0]
 -- > calcBmis'' [(69,1.69)]
 
 -- GHCiでのlet
+
+-- 直接関数や定数を定義するときはinが省略できる
+-- > let zoot x y z = x * y + z
+-- > zoot 3 9 2
+-- inがあるとその場で使う
+-- > let boot x y z = x * y + z in boot 3 4 2
+-- > boot
+
+-- ------------------------------
+-- 3.5 Case式 (P.52 - P.54)
+-- ------------------------------
+
+-- コード中のどこでもパターンマッチが使える
+-- caseも式です
+-- 関数の引数に対するパターンマッチはcase式の構文糖衣
+
+head' :: [a] -> a
+head' [] = error "No head for empty lists!"
+head' (x:_) = x
+-- > head' [1,2,3]
+
+-- 最初にマッチするパターンが使われる
+-- マッチするパターンが無いと実行時エラー
+
+head'' :: [a] -> a
+head'' xs = case xs of	[] -> error "No head for empty lists!"
+			(x:_) -> x
+-- > head'' [1,2,3]
+
+-- パターンマッチは定義時だけだが、case式はどこでも使える
+-- 最終的にひとつの値になり、The list is に連結される
+
+describeList :: [a] -> String
+describeList ls = "The list is "
+	++ case ls of	[] -> "empty."
+			[x] -> "a singleton list."
+			xs -> "a longer list."
+-- > describeList []
+-- > describeList [1]
+-- > describeList [1,2,3]
+
+-- 次のようにも定義できる
+-- 関数を連結
+
+describeList' :: [a] -> String
+describeList' ls = "The list is " ++ what ls
+	where	what [] = "empty."
+		what [x] = "a singleton list."
+		what xs = "a longer list."	
+
+-- > describeList' []
+-- > describeList' [1]
+-- > describeList' [1,2,3]
