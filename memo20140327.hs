@@ -102,3 +102,54 @@ let {
 
 elem' 'a' ['a'..'e']
 elem' 1000 [1..100]
+
+--------
+--おまけ
+--------
+
+--階乗いろいろ
+
+--定番
+let {
+	factorial :: Int -> Int;
+	factorial 0 = 1;
+	factorial i = i * factorial (i - 1);
+}
+factorial 3
+
+--schemeっぽく
+fac n = (if ((==) n 0) then 1 else ((*) n (fac ((-) n 1))))
+fac 3
+
+--標準関数使う
+fac_prod n = product [1..n]
+fac_prod 3
+
+--iter
+--sicpにのってる
+let {
+	fac_iter max_num iter result
+		|max_num < iter = result
+		|otherwise = fac_iter max_num (iter + 1) result * iter; 
+}
+
+let {
+	fac_sicp :: Int -> Int;
+	fac_sicp n = fac_iter n 1 1
+}
+
+fac_sicp 3
+fac_sicp 4
+
+--もっと抽象化
+
+let {
+	iter_func f max_num iter result
+		|max_num < iter = result
+		|otherwise = iter_func f max_num (iter + 1) (f result iter);
+}
+
+let {
+	fac_supper n = iter_func (*) n 1 1;
+}
+fac_supper 3
