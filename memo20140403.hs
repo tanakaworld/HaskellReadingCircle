@@ -97,7 +97,7 @@ let {
 	elem' a [] = False;
 	elem' a (x:xs)
 		|a == x = True
-		|otherwise = elem a xs;  
+		|otherwise = elem' a xs;  
 }
 
 elem' 'a' ['a'..'e']
@@ -118,11 +118,18 @@ let {
 factorial 3
 
 --schemeっぽく
-fac n = (if ((==) n 0) then 1 else ((*) n (fac ((-) n 1))))
+let {
+fac :: Int -> Int;
+fac n = (if ((==) n 0) then 1 else ((*) n (fac ((-) n 1))));
+}
 fac 3
 
 --標準関数使う
+let {
+fac_prod :: Int -> Int;
 fac_prod n = product [1..n]
+}
+
 fac_prod 3
 
 --iter
@@ -153,3 +160,9 @@ let {
 	fac_supper n = iter_func (*) n 1 1;
 }
 fac_supper 3
+
+let {
+	fac_plus n = iter_func (+) n 1 0;
+}
+
+fac_plus 3
